@@ -45,17 +45,19 @@ int __init kmlab_init(void)
    pr_info("KMLAB MODULE LOADING\n");
    #endif
    // Insert your code here ...
+   proc_dir = proc_mkdir("kmlab", NULL);
+
    if (!proc_dir)
    {
       pr_err("Failed to create /proc/kmlab\n");
       return -ENOMEM;
    }
    
-   proc_status = proc_create("status", 0444, proc_dir, NULL);
+   proc_status = proc_create("status", 0444, proc_dir, &kmlab_proc_ops);
 
    if (!proc_status)
    {
-      pr_err("Failed to create /proc/kmlab\n");
+      pr_err("Failed to create /proc/kmlab/status\n");
       proc_remove(proc_dir);
       return -ENOMEM;
    }
@@ -71,7 +73,8 @@ void __exit kmlab_exit(void)
    pr_info("KMLAB MODULE UNLOADING\n");
    #endif
    // Insert your code here ...
-   
+   proc_remove(proc_status);
+   proc_remove(proc_dir);
    
 
    pr_info("KMLAB MODULE UNLOADED\n");

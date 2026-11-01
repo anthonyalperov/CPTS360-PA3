@@ -1,11 +1,22 @@
+
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Linux Kernel",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/usr/src/linux-headers-7.0.0-31-generic/include",
+                "/usr/src/linux-headers-7.0.0-31-generic/include/generated",
+                "/usr/src/linux-headers-7.0.0-31-generic/arch/x86/include",
+                "/usr/src/linux-headers-7.0.0-31-generic/arch/x86/include/generated",
+                "/usr/src/linux-headers-7.0.0-31/include",
+                "/usr/src/linux-headers-7.0.0-31/arch/x86/include"
             ],
-            "defines": [],
+            "defines": [
+                "__KERNEL__",
+                "MODULE",
+                "LINUX"
+            ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu23",
             "cppStandard": "gnu++17",
