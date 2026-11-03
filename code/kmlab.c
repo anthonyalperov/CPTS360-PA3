@@ -177,8 +177,30 @@ static void kmlab_timer_callback(struct timer_list *timer)
 // Workqueue function
 static void kmlab_work_function(struct work_struct *work)
 {
-    // CPU-time updates will be implemented next
-    pr_info("KMLAB: Workqueue executed\n");
+    proc_list *entry;
+    proc_list *temp;
+    unsigned long cpu_value;
+
+    mutex_lock(&process_lock);
+
+    list_for_each_entry_safe(entry, temp, &process_list, list)
+    {
+        if (get_cpu_use(entry->pid, &cpu_value) == 0)
+        {
+            entry->cpu_time = cpu_value;
+            pr_info("KMLAB: Updated PID %u, CPU time %lu\n", entry->pid, entry->cpu_time);
+        }
+        else
+        {
+            // Process no longer exists: remove it
+            pr_info("KMLAB: Removing terminated PID %u\n", entry->pid);
+
+            list_del(&entry->list);
+            kfree(entry);
+        }
+    }
+
+    mutex_unlock(&process_lock);
 }
 
 // Register read and write callbacks
