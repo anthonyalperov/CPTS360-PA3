@@ -52,11 +52,11 @@ int main(int argc, char* argv[])
     register_process(getpid());
 
     // Perform CPU-intensive calculations
-    volatile unsigned long long result = 0;
+    volatile long long result = 0;
 
     // Terminate user application if the time has expired
     while (1) {
-        for (unsigned long i = 0; i < 1000000; i++)
+        for (int i = 0; i < 1000000; i++)
         {
             result += ((long long)i * i) % 97;
         }
